@@ -3,54 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конвертер валют</title>
+    <title>Neon Currency | Премиум конвертер валют</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div class="particles" id="particles-js"></div>
+    
     <div class="container">
-        <header>
-            <h1>Курсы валют</h1>
-            <p>Актуальные курсы на <span id="current-date"></span></p>
+        <header class="animate__animated animate__fadeInDown">
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+                <h1>Neon<span>Currency</span></h1>
+            </div>
+            <div class="date-display">
+                <i class="fas fa-calendar-alt"></i>
+                <span id="current-date"></span>
+                <button id="refresh-btn" class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
         </header>
 
-        <div class="converter">
-            <h2>Конвертер валют</h2>
-            <div class="converter-form">
-                <input type="number" id="amount" placeholder="Сумма" value="1" min="0">
-                <select id="from-currency">
-                    <!-- Валюта будет добавлена через JS -->
-                </select>
-                <div class="equals">=</div>
-                <input type="number" id="result" placeholder="Результат" readonly>
-                <select id="to-currency">
-                    <option value="RUB" selected>Российский рубль (RUB)</option>
-                </select>
+        <main>
+            <section class="converter-section animate__animated animate__fadeIn animate__delay-1s">
+                <div class="converter-glass">
+                    <h2><i class="fas fa-exchange-alt"></i> Конвертер валют</h2>
+                    
+                    <div class="converter-grid">
+                        <div class="input-group animate__animated animate__fadeInLeft animate__delay-2s">
+                            <input type="number" id="amount" value="1" min="0" placeholder="Сумма">
+                            <div class="currency-select">
+                                <select id="from-currency"></select>
+                                <div class="select-arrow">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="swap-btn-container animate__animated animate__zoomIn animate__delay-3s">
+                            <button id="swap-currencies" class="swap-btn">
+                                <i class="fas fa-random"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="result-group animate__animated animate__fadeInRight animate__delay-2s">
+                            <input type="text" id="result" placeholder="Результат" readonly>
+                            <div class="currency-select">
+                                <select id="to-currency"></select>
+                                <div class="select-arrow">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="conversion-rate animate__animated animate__fadeInUp animate__delay-4s">
+                        <span id="conversion-text"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="rates-section animate__animated animate__fadeInUp animate__delay-5s">
+                <div class="rates-glass">
+                    <h2><i class="fas fa-chart-line"></i> Текущие курсы</h2>
+                    
+                    <div class="tabs">
+                        <button class="tab active" data-tab="main">Основные</button>
+                        <button class="tab" data-tab="crypto">Криптовалюты</button>
+                        <button class="tab" data-tab="all">Все валюты</button>
+                    </div>
+                    
+                    <div class="rates-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Валюта</th>
+                                    <th>Курс</th>
+                                    <th>Изменение (24ч)</th>
+                                    <th>График</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rates-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="animate__animated animate__fadeIn animate__delay-6s">
+            <div class="update-info">
+                <span id="update-time"><i class="fas fa-clock"></i> Последнее обновление: --:--:--</span>
             </div>
-        </div>
-
-        <div class="rates-table">
-            <h2>Текущие курсы к рублю</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Валюта</th>
-                        <th>Курс</th>
-                        <th>Изменение</th>
-                    </tr>
-                </thead>
-                <tbody id="rates-body">
-                    <!-- Данные будут добавлены через JS -->
-                </tbody>
-            </table>
-        </div>
-
-        <footer>
-            <p>Данные предоставляются ExchangeRate-API</p>
-            <p id="update-time">Последнее обновление: --:--:--</p>
+            <div class="api-info">
+                <span>Данные предоставляются <span class="api-name">ExchangeRate-API</span></span>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
         </footer>
     </div>
 
+    <div class="modal" id="chart-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title">График курса</h3>
+            <div class="chart-container">
+                <canvas id="currency-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
-  </html>
+</html>
