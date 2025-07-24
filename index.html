@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер валют</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Курсы валют</h1>
+            <p>Актуальные курсы на <span id="current-date"></span></p>
+        </header>
+
+        <div class="converter">
+            <h2>Конвертер валют</h2>
+            <div class="converter-form">
+                <input type="number" id="amount" placeholder="Сумма" value="1" min="0">
+                <select id="from-currency">
+                    <!-- Валюта будет добавлена через JS -->
+                </select>
+                <div class="equals">=</div>
+                <input type="number" id="result" placeholder="Результат" readonly>
+                <select id="to-currency">
+                    <option value="RUB" selected>Российский рубль (RUB)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="rates-table">
+            <h2>Текущие курсы к рублю</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Валюта</th>
+                        <th>Курс</th>
+                        <th>Изменение</th>
+                    </tr>
+                </thead>
+                <tbody id="rates-body">
+                    <!-- Данные будут добавлены через JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>Данные предоставляются ExchangeRate-API</p>
+            <p id="update-time">Последнее обновление: --:--:--</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+  </html>
